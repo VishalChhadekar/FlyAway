@@ -27,10 +27,6 @@ public class HibernateUtil {
 		configuration.addAnnotatedClass(Customer.class);
 		configuration.addAnnotatedClass(Admin.class);
 
-		
-	
-
-//		Step2: Create seesion factory obje and return
 		sessionFactory = configuration.buildSessionFactory();
 		return sessionFactory;
 

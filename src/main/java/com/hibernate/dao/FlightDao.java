@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import com.hibernate.entity.Customer;
 import com.hibernate.entity.Flight;
 import com.hibernate.util.HibernateUtil;
 
@@ -43,4 +44,47 @@ public class FlightDao {
 		session.close();
 		return flights;
 	}
+	
+	public static Flight getFlight(int flight_id) {
+		Flight flight = null;
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session session = sf.openSession();
+		Transaction tx = session.beginTransaction();
+		flight = session.get(Flight.class, flight_id);
+		tx.commit();
+		session.close();
+		return flight;
+	}
+	
+	public static void updateFlight(Flight flight) {
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session session = sf.openSession();
+		Transaction tx = session.beginTransaction();
+		session.saveOrUpdate(flight);
+		tx.commit();
+		session.close();
+	}
+	
+	public static List<Flight> getAllFlight() {
+		List<Flight> flights = null;
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session session = sf.openSession();
+		flights = session.createQuery("from Flight").list();
+		session.close();
+		return flights;
+	}
+	
+	public static void deleteFlight(int flight_id) {
+		Flight flight = null;
+		SessionFactory sf = HibernateUtil.getSessionFactory();
+		Session session = sf.openSession();
+		Transaction tx = session.beginTransaction();
+		flight = session.get(Flight.class, flight_id);
+		session.delete(flight);
+		tx.commit();
+		session.close();
+		
+	}
+	
+	
 }

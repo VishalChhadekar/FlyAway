@@ -7,6 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Admin Sign Up.jsp</title>
+</head>
+<body>
 	<%
 	String adminUserId = request.getParameter("admin_id");
 	String password = request.getParameter("admin_password");
@@ -23,10 +25,7 @@
 	AdminDao.addAdmin(admin);
 
 	%>
-	Sign Up successfully!
 	
-</head>
-<body>
-
+	<h4>Sign Up successfully!</h4>
 </body>
 </html>

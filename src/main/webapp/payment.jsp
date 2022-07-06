@@ -14,35 +14,37 @@
 <html>
 <head>
 <style>
-		table, th, td {
-			border: 1px solid black;
-		}
-	</style>
+table, th, td {
+	border: 1px solid black;
+}
+</style>
 <meta charset="UTF-8">
 <title>payment</title>
 </head>
 <body>
-<%
+	<%
 	String flight_ID = request.getParameter("flight_ID").toString();
 	int f_ID = Integer.parseInt(flight_ID);
-	String customerPhone = request.getParameter("cust_phone").toString();
-	long custPhone = Long.parseLong(customerPhone);
+	String noOfPassengers = request.getParameter("passengers").toString();
+	int passengers = Integer.parseInt(noOfPassengers);
 	String totolCost = request.getParameter("totalCost").toString();
+	String customerId = request.getParameter("customer_ID").toString();
+	int cust_Id = Integer.parseInt(customerId);
 	%>
 	<%
 	String cardNumber = request.getParameter("cust_phone");
 	String CVVNumber = request.getParameter("flight_ID");
 	%>
-	
-	
-		
+
+
+
 	<!-- display Flight details -->
-		<%
+	<%
 	List<Flight> flight = FlightDao.getflight(f_ID);
 	request.setAttribute("flightlist", flight);
 	%>
 	<h3>Selected Flight Details</h3>
-	<table style="width:100%">
+	<table style="width: 100%">
 		<tr>
 			<th>Flight Id</th>
 			<th>Flight Number</th>
@@ -54,7 +56,7 @@
 			<th>Available Seats</th>
 			<th>Economic Class</th>
 			<th>Business Class</th>
-			
+
 		</tr>
 		<core:forEach items="${flightlist}" var="fli">
 			<tr>
@@ -68,18 +70,18 @@
 				<td>${fli.getSeats()}</td>
 				<td>${fli.getEc_price()}</td>
 				<td>${fli.getBc_price()}</td>
-	
+
 			</tr>
 		</core:forEach>
-	</table>	
-	
+	</table>
+
 	<!-- display customer details -->
-			<%
-	List<Customer> customers = CustomerDao.getCustomer(custPhone);
+	<%
+	List<Customer> customers = CustomerDao.getAllCustomer(cust_Id);
 	request.setAttribute("customerlist", customers);
 	%>
 	<h3>Customer Details</h3>
-	<table style="width:100%">
+	<table style="width: 100%">
 		<tr>
 			<!-- <th>Customer Id</th> -->
 			<th>CustID</th>
@@ -90,8 +92,8 @@
 			<th>Passport Number</th>
 			<th>Flight Type</th>
 			<th>Passengers</th>
-			
-			
+
+
 		</tr>
 
 		<core:forEach items="${customerlist}" var="cu">
@@ -105,20 +107,34 @@
 				<td>${cu.getPassportNumber()}</td>
 				<td>${cu.getFlightType()}</td>
 				<td>${cu.getNoOfPassagners()}</td>
-		
+
 			</tr>
 		</core:forEach>
 	</table>
-	
-	
-	<!-- payment updates -->
-<%-- 	<%
-	Customer customer = new Customer();
-	customer.setPaymentStatus("Paid");
-	CustomerDao.addCustomer(customer);
-	%> --%>
-	
-	<h3>Payment of <%=totolCost %> is done.</h3>
 
+
+	<!-- payment updates -->
+	<%
+	Customer customer = (Customer) CustomerDao.getCustomer(cust_Id);
+	customer.setPaymentStatus("Paid");
+	CustomerDao.updateCustomer(customer);
+	%>
+
+	<h3>
+		Payment of
+		<%=totolCost%>
+		is done.
+	</h3>
+	<h3>You have booked the flight successfully!</h3>
+
+
+	<!-- Updating flight with available seats -->
+
+	<%
+	Flight flightUpdate = (Flight) FlightDao.getFlight(f_ID);
+	int availableSeats = flightUpdate.getSeats();
+	flightUpdate.setSeats(availableSeats - passengers);
+	FlightDao.updateFlight(flightUpdate);
+	%>
 </body>
 </html>

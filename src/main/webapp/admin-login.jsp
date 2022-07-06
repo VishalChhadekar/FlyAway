@@ -46,8 +46,8 @@ String secQueAnswer = "";
 	LogIn Successful!
 	<h3>Admin Dashboard</h3>
 	<a href="add-new-flight.html">Add new Flight</a><br>
-	<a href="#">View Flights</a><br>
-	<a href="#">View Customer</a><br>
+	<a href="view-flights.jsp">View Flights</a><br>
+	<a href="view-customers.jsp">View Customer</a><br>
 	<%
 	} else {
 	%>

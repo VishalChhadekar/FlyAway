@@ -76,17 +76,20 @@
 	customer.setTotalCost(totalCost);
 
 	CustomerDao.addCustomer(customer);
+	int cust_Id = customer.getCustId();
+	int passenger = customer.getNoOfPassagners();
 	%>
 
 
 	<h2>Registered Successfully!</h2>
     <h3>Total cost: <%= totalCost%></h3> <br> <br>
-   
   <h2>Payment Details</h2>
 	<form action="payment.jsp"><br>
 	<input type = "hidden" name = "cust_phone" value =<%=phoneNumber%>>
 	<input type = "hidden" name = "flight_ID" value =<%=flight_ID %>>
 	<input type = "hidden" name = "totalCost" value =<%=totalCost %>>
+	<input type = "hidden" name = "customer_ID" value =<%=cust_Id %>>
+	<input type = "hidden" name = "passengers" value =<%=passenger %>>
 		Card Number<input type="number" name="cardNumber"><br> 
 		CCV<input type="number" name="cardCVV"><br>
 		<button type="submit">Pay</button><br>
